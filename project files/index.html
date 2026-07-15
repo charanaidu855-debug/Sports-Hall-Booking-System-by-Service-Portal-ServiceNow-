@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Zone - Sports Hall Booking Portal</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (loaded via CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Shell -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-icon">
+          <i data-lucide="dumbbell"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Sports Zone</h1>
+          <span>Portal Suffix: /sz</span>
+        </div>
+      </div>
+      
+      <nav class="nav-menu">
+        <button class="nav-btn active" data-target="booking-section">
+          <i data-lucide="calendar-days"></i>
+          <span>Book Facility</span>
+        </button>
+        <button class="nav-btn" data-target="admin-section">
+          <i data-lucide="shield-check"></i>
+          <span>Manager Portal</span>
+        </button>
+        <button class="nav-btn" data-target="mailbox-section">
+          <i data-lucide="mail"></i>
+          <span>Mail Simulator</span>
+          <span class="badge" id="mail-badge" style="display: none;">0</span>
+        </button>
+      </nav>
+
+      <div class="system-status">
+        <div class="status-indicator online"></div>
+        <span>ServiceNow Instance: PDI</span>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <h2 id="section-title">Facility Reservations</h2>
+          <p id="section-subtitle">Real-time booking and facility scheduling</p>
+        </div>
+        <div class="header-right">
+          <div class="user-profile">
+            <div class="avatar">U</div>
+            <div class="user-info">
+              <span class="user-name">End User (Guest)</span>
+              <span class="user-role">Customer</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW 1: BOOKING SECTION -->
+      <section id="booking-section" class="content-view active">
+        
+        <!-- Booking Step Indicator -->
+        <div class="step-indicator">
+          <div class="step active" id="step-1-indicator">
+            <span class="step-num">1</span>
+            <span class="step-text">Select Sport</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="step-2-indicator">
+            <span class="step-num">2</span>
+            <span class="step-text">Fill Details</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step" id="step-3-indicator">
+            <span class="step-num">3</span>
+            <span class="step-text">Checkout</span>
+          </div>
+        </div>
+
+        <div id="booking-flow-container">
+          
+          <!-- SUB-VIEW 1.1: SELECT SPORT -->
+          <div id="sport-selection-pane" class="flow-pane active">
+            <h3 class="pane-title">Choose your sport to see availability</h3>
+            <div class="sports-grid" id="sports-grid">
+              <!-- Cards generated dynamically or static -->
+              <div class="sport-card" data-sport="Badminton" data-rate="15">
+                <div class="sport-icon-wrapper">
+                  <i data-lucide="award"></i>
+                </div>
+                <div class="sport-details">
+                  <h4>Badminton</h4>
+                  <p>Indoor court with high-grade synthetic mat</p>
+                  <span class="rate">$15 / Hour</span>
+                </div>
+                <div class="card-glow"></div>
+              </div>
+
+              <div class="sport-card" data-sport="Basketball" data-rate="25">
+                <div class="sport-icon-wrapper">
+                  <i data-lucide="dribbble"></i>
+                </div>
+                <div class="sport-details">
+                  <h4>Basketball</h4>
+                  <p>Standard maple hardwood floor with LED scoreboards</p>
+                  <span class="rate">$25 / Hour</span>
+                </div>
+                <div class="card-glow"></div>
+              </div>
+
+              <div class="sport-card" data-sport="Table Tennis" data-rate="10">
+                <div class="sport-icon-wrapper">
+                  <i data-lucide="swords"></i>
+                </div>
+                <div class="sport-details">
+                  <h4>Table Tennis</h4>
+                  <p>Professional ITTF-approved tables</p>
+                  <span class="rate">$10 / Hour</span>
+                </div>
+                <div class="card-glow"></div>
+              </div>
+
+              <div class="sport-card" data-sport="Tennis" data-rate="20">
+                <div class="sport-icon-wrapper">
+                  <i data-lucide="circle-dot"></i>
+                </div>
+                <div class="sport-details">
+                  <h4>Tennis</h4>
+                  <p>Premium acrylic hard courts with LED lighting</p>
+                  <span class="rate">$20 / Hour</span>
+                </div>
+                <div class="card-glow"></div>
+              </div>
+
+              <div class="sport-card" data-sport="Squash" data-rate="18">
+                <div class="sport-icon-wrapper">
+                  <i data-lucide="layers"></i>
+                </div>
+                <div class="sport-details">
+                  <h4>Squash</h4>
+                  <p>Glass-back courts with impact-absorbing floors</p>
+                  <span class="rate">$18 / Hour</span>
+                </div>
+                <div class="card-glow"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 1.2: FILL DETAILS & SLOT SELECTOR -->
+          <div id="booking-details-pane" class="flow-pane">
+            <div class="booking-split-container">
+              
+              <!-- Form inputs -->
+              <div class="form-card card-panel">
+                <h4 class="card-title"><i data-lucide="user"></i> Contact & Details</h4>
+                
+                <div class="form-group">
+                  <label for="contact-name">Full Name *</label>
+                  <input type="text" id="contact-name" class="form-control" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-email">Email Address *</label>
+                  <input type="email" id="contact-email" class="form-control" placeholder="yourname@example.com" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="contact-phone">Phone Number *</label>
+                  <input type="tel" id="contact-phone" class="form-control" placeholder="e.g. +1 555-0199" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="facility-court">Select Court / Hall *</label>
+                  <select id="facility-court" class="form-control">
+                    <!-- Loaded dynamically -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Date / Slot Selector & Live Price -->
+              <div class="slot-card card-panel">
+                <h4 class="card-title"><i data-lucide="calendar"></i> Date & Available Time Slots</h4>
+                
+                <div class="form-group">
+                  <label for="booking-date">Booking Date *</label>
+                  <input type="date" id="booking-date" class="form-control" required>
+                  <span class="field-hint">Book up to 14 days in advance</span>
+                </div>
+
+                <div class="form-group">
+                  <label>Available Slots (Each slot is 2 hours) *</label>
+                  <div class="slots-grid" id="slots-grid">
+                    <!-- Slots loaded dynamically -->
+                  </div>
+                </div>
+
+                <!-- Rate calculation panel -->
+                <div class="price-calculator-panel">
+                  <div class="calc-row">
+                    <span>Base Hourly Rate</span>
+                    <span id="calc-rate">$0.00 / hr</span>
+                  </div>
+                  <div class="calc-row">
+                    <span>Duration</span>
+                    <span>2 Hours (Single Slot)</span>
+                  </div>
+                  <hr class="calc-divider">
+                  <div class="calc-row total">
+                    <span>Estimated Total</span>
+                    <span id="calc-total">$0.00</span>
+                  </div>
+                </div>
+
+                <div class="pane-actions">
+                  <button type="button" class="btn btn-secondary" id="back-to-sports-btn"><i data-lucide="chevron-left"></i> Change Sport</button>
+                  <button type="button" class="btn btn-primary" id="proceed-to-payment-btn">Proceed to Payment <i data-lucide="credit-card"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 1.3: CHECKOUT / PAYMENT -->
+          <div id="payment-pane" class="flow-pane">
+            <div class="payment-split-container">
+              
+              <!-- Payment Form -->
+              <div class="payment-card card-panel">
+                <h4 class="card-title"><i data-lucide="lock"></i> Secure Digital Payment</h4>
+                
+                <div class="card-graphics">
+                  <div class="credit-card-visual">
+                    <div class="card-chip"></div>
+                    <div class="card-number-display">•••• •••• •••• ••••</div>
+                    <div class="card-bottom">
+                      <span class="card-holder-display">CARDHOLDER NAME</span>
+                      <span class="card-expiry-display">MM/YY</span>
+                    </div>
+                  </div>
+                </div>
+
+                <form id="payment-form">
+                  <div class="form-group">
+                    <label for="card-name">Cardholder Name</label>
+                    <input type="text" id="card-name" class="form-control" placeholder="e.g. John Doe" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="4000 1234 5678 9010" maxlength="19" required>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group half">
+                      <label for="card-expiry">Expiry Date</label>
+                      <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group half">
+                      <label for="card-cvv">CVV</label>
+                      <input type="password" id="card-cvv" class="form-control" placeholder="•••" maxlength="4" required>
+                    </div>
+                  </div>
+
+                  <div class="cancellation-policy-warning">
+                    <i data-lucide="alert-triangle"></i>
+                    <p><strong>Cancellation Policy:</strong> A 10% cancellation charge will be deducted from your refund if you cancel your booking after approval.</p>
+                  </div>
+
+                  <div class="pane-actions">
+                    <button type="button" class="btn btn-secondary" id="back-to-details-btn"><i data-lucide="chevron-left"></i> Edit Details</button>
+                    <button type="submit" class="btn btn-success" id="submit-booking-btn">Pay & Complete Booking <i data-lucide="check-circle"></i></button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Order Summary Pane -->
+              <div class="summary-card card-panel">
+                <h4 class="card-title"><i data-lucide="receipt"></i> Reservation Summary</h4>
+                <div class="summary-details">
+                  <div class="summary-item">
+                    <span class="label">Sport</span>
+                    <span class="value highlighted" id="summary-sport">-</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Facility</span>
+                    <span class="value" id="summary-facility">-</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Date</span>
+                    <span class="value" id="summary-date">-</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Time Slot</span>
+                    <span class="value" id="summary-slot">-</span>
+                  </div>
+                  <hr class="summary-divider">
+                  <div class="summary-item">
+                    <span class="label">Contact Person</span>
+                    <span class="value" id="summary-name">-</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">Contact Email</span>
+                    <span class="value" id="summary-email">-</span>
+                  </div>
+                  <hr class="summary-divider">
+                  <div class="summary-item total">
+                    <span class="label">Total Amount Paid</span>
+                    <span class="valuePrice" id="summary-total">$0.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 1.4: CONFIRMATION -->
+          <div id="confirmation-pane" class="flow-pane">
+            <div class="success-card card-panel">
+              <div class="success-icon-container">
+                <div class="success-ring"></div>
+                <i data-lucide="check" class="success-check"></i>
+              </div>
+              <h3>Reservation Successful!</h3>
+              <p class="success-msg">Your booking has been registered and is pending approval from the Sports Hall Manager.</p>
+              
+              <div class="receipt-box">
+                <div class="receipt-row">
+                  <span>Booking ID</span>
+                  <strong id="receipt-booking-id">#BK-10001</strong>
+                </div>
+                <div class="receipt-row">
+                  <span>Facility / Sport</span>
+                  <span id="receipt-sport-hall">-</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Date & Time</span>
+                  <span id="receipt-date-time">-</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Payment Status</span>
+                  <span class="badge badge-success">Paid</span>
+                </div>
+                <div class="receipt-row">
+                  <span>Workflow Status</span>
+                  <span class="badge badge-pending" id="receipt-workflow-status">Pending Approval</span>
+                </div>
+              </div>
+
+              <div class="notification-info-callout">
+                <i data-lucide="info"></i>
+                <p>A confirmation email has been dispatched. Please monitor the **Mail Simulator** (sidebar) for automated notifications and status updates.</p>
+              </div>
+
+              <div class="confirmation-actions">
+                <button type="button" class="btn btn-primary" id="book-another-btn">Book Another Facility <i data-lucide="plus-circle"></i></button>
+                <button type="button" class="btn btn-secondary" id="go-to-admin-btn">Open Manager Portal <i data-lucide="shield-check"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW 2: MANAGER DASHBOARD -->
+      <section id="admin-section" class="content-view">
+        
+        <!-- Stats Cards Row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon bg-cyan">
+              <i data-lucide="calendar"></i>
+            </div>
+            <div class="stat-info">
+              <h4 id="stat-total-bookings">0</h4>
+              <p>Total Bookings</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon bg-green">
+              <i data-lucide="dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+              <h4 id="stat-total-revenue">$0.00</h4>
+              <p>Total Revenue</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon bg-yellow">
+              <i data-lucide="clock"></i>
+            </div>
+            <div class="stat-info">
+              <h4 id="stat-pending-approvals">0</h4>
+              <p>Pending Approvals</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon bg-red">
+              <i data-lucide="percent"></i>
+            </div>
+            <div class="stat-info">
+              <h4 id="stat-cancellation-fees">$0.00</h4>
+              <p>Cancellation Deductions</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bookings Data Table -->
+        <div class="table-card card-panel">
+          <div class="table-header">
+            <h3 class="table-title"><i data-lucide="table"></i> Sports Hall Bookings (u_sports_hall_bookings)</h3>
+            <div class="table-actions">
+              <button class="btn btn-sm btn-secondary" id="trigger-scheduled-job-btn">
+                <i data-lucide="alarm-clock"></i> Run Reminder Job (24h Alert)
+              </button>
+              <button class="btn btn-sm btn-outline" id="clear-db-btn">
+                <i data-lucide="trash-2"></i> Reset Database
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="bookings-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>User Details</th>
+                  <th>Sport & Court</th>
+                  <th>Date & Time</th>
+                  <th>Fee Paid</th>
+                  <th>Status</th>
+                  <th>Cancellation Fee</th>
+                  <th>Refunded Amt</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+                <tr class="empty-row-placeholder">
+                  <td colspan="9" style="text-align: center; padding: 40px; color: var(--color-text-muted);">
+                    No reservation records found. Book a facility to generate records.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Custom Cancellation Business Rule Modal -->
+        <div class="modal" id="cancel-modal">
+          <div class="modal-content card-panel">
+            <h4 class="modal-title"><i data-lucide="alert-triangle" style="color: var(--color-warning);"></i> Process Facility Cancellation</h4>
+            <p>You are about to cancel this booking. This will trigger the <strong>ServiceNow Business Rule logic</strong> configured on the <code>u_sports_hall_bookings</code> table.</p>
+            
+            <div class="cancellation-breakdown">
+              <div class="breakdown-row">
+                <span>Original Fee Paid:</span>
+                <span id="modal-fee-paid">$0.00</span>
+              </div>
+              <div class="breakdown-row warning-text">
+                <span>Cancellation Fee (10% Deduction):</span>
+                <span id="modal-cancellation-charge">$0.00</span>
+              </div>
+              <hr class="breakdown-divider">
+              <div class="breakdown-row success-text">
+                <span>Net Refunded Amount (90%):</span>
+                <strong id="modal-refund-amount">$0.00</strong>
+              </div>
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-secondary" id="close-cancel-modal-btn">Cancel</button>
+              <button class="btn btn-danger" id="confirm-cancellation-btn">Process Refund & Cancel</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- VIEW 3: MAILBOX / NOTIFICATION SIMULATOR -->
+      <section id="mailbox-section" class="content-view">
+        <div class="mailbox-layout">
+          
+          <!-- Inbox Sidebar -->
+          <div class="inbox-panel card-panel">
+            <h3 class="panel-title"><i data-lucide="inbox"></i> Incoming Notification Events</h3>
+            <div class="inbox-list" id="inbox-list">
+              <!-- Dynamically populated emails -->
+              <div class="inbox-empty">
+                <i data-lucide="mail-open"></i>
+                <p>No emails in simulator inbox yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Preview Panel -->
+          <div class="preview-panel card-panel" id="email-preview-panel">
+            <div class="preview-empty-state">
+              <i data-lucide="eye-off"></i>
+              <p>Select an email from the inbox list to read it and check ServiceNow Event / Notification triggers.</p>
+            </div>
+            
+            <div class="email-details" id="email-details" style="display: none;">
+              <div class="email-header-info">
+                <h4 id="email-subject">-</h4>
+                <div class="email-meta">
+                  <div><strong>From:</strong> <span id="email-from">sportszone.notifications@service-now.com</span></div>
+                  <div><strong>To:</strong> <span id="email-to">-</span></div>
+                  <div><strong>Event Fired:</strong> <code id="email-event-fired">-</code></div>
+                  <div><strong>Time:</strong> <span id="email-time">-</span></div>
+                </div>
+              </div>
+              <hr class="email-divider">
+              <div class="email-body-content" id="email-body">
+                <!-- HTML Content injected dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Simulated Toast Notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Custom Javascript -->
+  <script src="app.js"></script>
+</body>
+</html>
